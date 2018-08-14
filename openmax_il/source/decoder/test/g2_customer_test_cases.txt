@@ -1,0 +1,21 @@
+
+!input=../../../../testdata_customer/G2/input/
+!output=../../../../testdata_customer/G2/output/
+
+# hevc, 640x480, 60 frames, YUV420 semi-planar
+-id DEC_OMX_HEVC_CASE_1 -hevc -iw 640 -ih 480 -w 640 -h 480 -i $(input)omx_hevc_case_1.hevc -rd $(output) -rf omx_hevc_case_1.yuv
+
+# hevc, 640x480, 60 frames, YUV420 semi-planar, RFC enabled
+-id DEC_OMX_HEVC_CASE_2 -hevc -rfc -iw 640 -ih 480 -w 640 -h 480 -i $(input)omx_hevc_case_1.hevc -rd $(output) -rf omx_hevc_case_1.yuv
+
+# hevc, 640x480, 60 frames, YUV420 semi-planar 4x4 tiled
+-id DEC_OMX_HEVC_CASE_3 -hevc -tiled -iw 640 -ih 480 -w 640 -h 480 -i $(input)omx_hevc_case_1.hevc -rd $(output) -rf omx_hevc_case_3.yuv
+
+# vp9, 640x480, 60 frames, YUV420 semi-planar
+-id DEC_OMX_VP9_CASE_1 -vp9 -iw 640 -ih 480 -w 640 -h 480 -i $(input)omx_vp9_case_1.ivf -rd $(output) -rf omx_vp9_case_1.yuv
+
+# vp9, 640x480, 60 frames, YUV420 semi-planar, RFC enabled
+-id DEC_OMX_VP9_CASE_2 -vp9 -rfc -iw 640 -ih 480 -w 640 -h 480 -i $(input)omx_vp9_case_1.ivf -rd $(output) -rf omx_vp9_case_1.yuv
+
+# vp9, 640x480, 60 frames, YUV420 semi-planar 4x4 tiled
+-id DEC_OMX_VP9_CASE_3 -vp9 -tiled -iw 640 -ih 480 -w 640 -h 480 -i $(input)omx_vp9_case_1.ivf -rd $(output) -rf omx_vp9_case_3.yuv

@@ -1,0 +1,107 @@
+RELEASE NOTES
+Hantro-OpenMAX
+Date: 12/09/2016
+COPYRIGHT Hantro 2016. All Rights Reserved.
+
+
+Date: 09 December 2016
+TAG: omxil_dec_2_0_23
+
+1. Introduction
+
+Released modules:
+ - OpenMAX IL decoder component for Hantro G2 HW decoder
+ - OpenMAX Test client
+
+Required modules not included in this release:
+ - Bellagio core implementation for OpenMAX (libomxil-bellagio-0.9.3).
+  -> Configuration modified to install in BUILD directory
+ - Hantro G2 decoder product software SW Tag: swg2_3_1_omx_5r
+
+
+2. This release supports:
+ - HEVC and VP9 formats for G2 decoder
+
+
+3. Building Instructions
+Release contains one component and test software for it:
+ - OpenMAX IL G2 HW decoder (omxil/source/decoder)
+ - testclient (omxil/source/decoder/test)
+
+
+ 1.) Preconditions:
+  - libomxil-bellagio-0.9.3 is installed to
+    libomxil-bellagio-0.9.3/build directory
+  - G2 API headers and libraries are available
+  - unzip g2_decoder_omx_testdata.tar.gz to same directory with omxil
+
+ 2.) Configure and build G2 HW decoder component
+  - set working directory to omxil/source/decoder
+  - edit Makefile
+    * Set correct path to BELLAGIO_ROOT variable
+    * Check that correct decoder HW is selected
+    * Check supported codecs (HEVC, VP9)
+  - execute gmake
+    * "gmake install"
+
+  3.) Configure and build testclient for G2 HW decoder
+  - set working directory to omxil/source/decoder/test
+  - edit Makefile
+    * Set correct compiler (CC)
+    * Check that correct decoder HW is selected
+  - execute gmake
+    * "gmake install"
+  - run
+    * ./customer_test_g2.sh
+
+
+4. Compatible Products and Environments
+This product has been tested on the following product:
+ - G2 HW decoder model
+
+
+5. Implemented Features
+The following features appear in this release:
+ - HEVC decoder
+ - VP9 decoder
+ - Dynamic traces
+ - Component can set output port buffer size
+    Use CFLAGS += -DCOMPONENT_SETS_OUTPUT_PORT_BUFFER_SIZE
+ - Support for sending common output crop information
+    Use CFLAGS += -DUSE_OUTPUT_CROP
+ - Support externally allocated frame buffers
+    Use CFLAGS += -DUSE_EXTERNAL_BUFFER
+ - Support ALLOC_PRIVATE structure for accessing HW physical address
+    Use CFLAGS += -DUSE_ALLOC_PRIVATE
+ - Support OUTPUT_BUFFER_PRIVATE struct for accessing HW physical
+   address and RFC table data
+    Use CFLAGS += -DUSE_OUTPUT_BUFFER_PRIVATE
+
+6. Debugging and Tracing
+
+Decoder:
+ For logging use DENABLE_DBGT_TRACE for CFLAGS in Makefile
+ CFLAGS += -DENABLE_DBGT_TRACE
+
+ Activate all traces:
+    Android:
+    adb shell setprop debug.g2dec.trace 0xffff
+    Bash:
+    export debug_g2dec_trace=0xffff
+
+ Activate light traces and prolog/epilog
+    Android:
+    adb shell setprop debug.g2dec.trace 0x33
+    Bash:
+    export debug_g2dec_trace=0x33
+
+
+7. Known Bugs and Limitations
+ - Downscaler is not supported
+ - Not tested on Android
+ - VP9 Dynamic resolution streams not supported
+
+G2 HW decoder:
+   OpenMAX Interop profile implementation doesn't support suspension.
+   OpenMAX Interop profile implementation doesn't support resource management.
+

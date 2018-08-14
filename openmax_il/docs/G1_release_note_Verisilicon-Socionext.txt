@@ -1,0 +1,593 @@
+--------------------------------------------------------------------------------
+--                                                                            --
+--           This confidential and proprietary software may be used           --
+--              only as authorized by a licensing agreement from              --
+--                                                                            --
+--                            Hantro Products Oy.                             --
+--                                                                            --
+--      In the event of publication, the following notice is applicable:      --
+--                                                                            --
+--                   (C) COPYRIGHT 2009 HANTRO PRODUCTS OY                    --
+--                            ALL RIGHTS RESERVED                             --
+--                                                                            --
+--    The entire notice above must be reproduced on all authorized copies.    --
+--                                                                            --
+--------------------------------------------------------------------------------
+--                                                                            --
+--  File Name           : release_note_Verisilicon.txt                        --
+--                                                                            --
+--  Abstract            : Release note & TOC.                                 --
+--                                                                            --
+--------------------------------------------------------------------------------
+==================================================
+ Date: 2016-12-09
+ Contents of Relg1_4_22_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+
+    - Add macro "USE_RANDOM_TEST" to support random stream error generation in MPEG2/H264 LL code.
+    - Rename the function "xxxDecWaitAfter" to "xxxDecAbortAfter".
+    - Update LL/OMX IL code of MPEG2/MPEG4/AVS/VC1/VP8/VP6/RV to support I-pic playback by
+      using CommandFlush(ALL)(JIRA 180).
+    - Update LL code of MPEG2 to output the last single field(JIRA 181).
+    - Add "singleField" in OMX private output area to indicate if current output buffer contains single
+      Field or not.(Only used for H264/MPEG2)(JIRA 181).
+    - Fix the first frame discard issue in VC1 simple/main profile(JIRA 182).
+    - Add abort path in the while-loop of pop_propagate_data to avoid potential deadlock(JIRA 166).
+    - Update OMX IL code to fix the illegal nTimeStamp for the first output buffer after statechange(JIRA 183).
+    - Update LL code of VP8/VP6/MPEG2/MPEG4/RV/VC1/AVS to fix the mutex mismatch issue in xxxDecEndOfStream.
+    - Update OMX IL code to handle the return value "XXXDEC_ABORTED" in function endofstream()(JIRA 184).
+    - Fix the assertion in OMX IL when decoding H264 burst error bitstream(JIRA 185).
+    - Fix the input buffer overrun issue in MPEG2(JIRA 186).
+
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+
+==================================================
+ Date: 2016-11-15
+ Contents of Relg1_4_21_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+
+    - Update LL code of MPEG2/MPEG4/AVS/VC1/VP8/VP6/RV to discard repeat frames.(JIRA 177)
+      (NOTE: macro USE_PICTURE_DISCARD=n by default, please open this macro to support
+       this new feature)
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-10-31
+ Contents of Relg1_4_20_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+
+    - Update LL code of MPEG4/AVS/VC1/MPEG2 to support dynamic change of dpb mode if
+      progressive_sequence is changed.(JIRA 148)
+    - Add escape path in timestamp/markbuffer pop loop in async_dispatch_frame_buffer(JIRA 166).
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-10-21
+ Contents of Relg1_4_19_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - Update LL code of MPEG2 to support dynamic change of dpb mode if
+      progressive_sequence is changed.(JIRA 148a)
+    - Update LL code of MPEG2 to ignore "framePredFrameDCT" when determine dpb mode(JIRA 148b).
+      (NOTE: USE_FRAME_PRED_CHECK_INTERLACE is enabled by default, If
+       USE_FRAME_PRED_CHECK_INTERLACE=n, framePredFrameDCT would be ignored.)
+    - Update LL code of H264 to recover DPB when decoding error streams(JIRA 166).
+    - Update LL code of H264 to skip open-B frames(JIRA 126).
+    - Update OMX code of H264/MPEG2/MPEG4/RV/AVS/VC1/VP6/VP8 to fix Bufferlist
+      overwritten issue when outport buffer is returned out-of-order(JIRA 174).
+    - Update OMX code to fix the potential deadlock occured in pop_propagate_data(JIRA 116).
+    - Update OMX code to clear buffer header parameters when output buffer returned in
+      CommandFlush/StateChange sequence(JIRA 175).
+    - Update OMX code to clear warning message when decoder return STREAM_NOT_SUPPORTED(JIRA 170).
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-09-30
+ Contents of Relg1_4_18_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - Update OMX IL code and LL code of H264/MPEG2/MPEG4/RV/AVS to fix unexpected
+      self statechange when decoder return STREAM_NOT_SUPPORTED(JIRA 170).
+    - Update LL code of AVS/MPEG2/MPEG4 to support dynamic change of dpbmode
+      for different sequence(JIRA 148, item b).
+      (NOTE: VC1 and H264 have supported this feature)
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-09-23
+ Contents of Relg1_4_17_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - Update LL code to recover from error in signal missing case for H264(JIRA 166).
+    - Correct the display order due to the HRD bumping algorizm in H264(JIRA 169).
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-09-19
+ Contents of Relg1_4_16_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - Reorder nTimeStamp and MarkBuffer of RV/VC1/AVS/VP8/VP6/MPEG4(JIRA 116).
+    - Clear sequence header information for VC1/AVS/MPEG2/MPEG4 after
+      CommangFlush/StateChange(JIRA 164b).
+      (NOTE: Macro CLEAR_HDRINFO_IN_SEEK is enabled by default to clear
+       sequence header info.)
+    - Fix compiling issue on Android platform(JIRA 152).
+      (NOTE: we can not guarantee all errors have been fixed because of lack
+       of environment)
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-09-14
+ Contents of Relg1_4_15_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - Reorder nTimeStamp and MarkBuffer of H264/MPEG2(JIRA 116).
+    - Reset frameNum of Mpeg2 to 0 after StateChange(Exec->Idle)/CommandFlush.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-09-09
+ Contents of Relg1_4_14_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. RV/VC1/MPEG4/VP6/VP8/AVS API changes
+    - Update OMX IL code and  LL code to support adaptive streams for
+      RV/VC1/MPEG4/VP6/VP8/AVS(JIRA 131f).
+    - Correct picture information before resolution change for
+      RV/VC1/MPEG4/VP6/VP8/AVS/MPEG2(JIRA 156c).
+    - Clear SPS/PPS information for H264 after CommangFlush/StateChange(JIRA 164a).
+      (NOTE: Macro CLEAR_HDRINFO_IN_SEEK is enabled by default to clear SPS/PPS info.
+      Use "CLEAR_HDRINFO_IN_SEEK=n" to keep old SPS/PPS info when compiling LL code.)
+    - Fix SEGV issues when input buffer has no input data except for EoS(JIRA 165).
+    - Update SEI extraction process and low delay bumping algorithm for H264(JIRA 168).
+    - Fix the OMX SEGV issue after CommangFlush mentioned in JIRA 147.
+    - Fix Sideeffect of adaptiveStreaming mode mentioned in JIRA 162.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-08-21
+ Contents of Relg1_4_13_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. RV/VC1/MPEG4/VP6/VP8/AVS API changes
+    - Add new APIs xxxDecAbort/xxxDecWaitAfter in RV/VC1/MPEG4/VP6/VP8/AVS LLcode
+      and update the corresponding OMX code (JIRA 144c)
+    - Correct picture information before resolution change for mpeg2(JIRA 156b).
+    - Support FLUSH command for RV/VC1/MPEG4/VP6/VP8/AVS in OMX IL(JIRA 147b/158b).
+    - Fix SEGV issue when paly VC1 interlace stream(JIRA 157).
+    - Fix the dynamic port reconfigure issue for MPEG2(JIRA 159).
+    - Set the defalut interlace information for H264(JIRA 160).
+    - Send the pic decode id(RV/VC1/MPEG4/VP6/VP8/AVS/H264/MPEG2)to OMX client(JIRA 116).
+    - Fix the potential timing/deadlock issues in LL code/OMX IL according to the PPT came from SNI. 
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-08-12
+ Contents of Relg1_4_12_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. Mpeg2/H264 API changes
+    - Add use_adaptive_buffers/guard_size in Mpeg2 decoder configuration
+      to set different stategy for adaptive streams. (JIRA 131)
+    - Fix the corner cases for JIRA 156.
+      (picWidth/picHeight should be set in h264DpbHRDBumping process)
+    - Update OMX IL to support FLUSH command.
+    - Update OMX test bench to support FLUSH command.
+      (Open macro TB_FLUSH to test flush command)
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-08-10
+ Contents of Relg1_4_11_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. H264 API changes
+    - Fix H264 picWidth/picHeight from H264DecNextPicture.(JIRA 156)
+    - Replace queue.c/queue.h with the new one.
+    - Revert decoder.c to set the EOS flag for last output buffer.
+    - Fix the deadlock risk at a normal EOS in omx output thread.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-08-08
+ Contents of Relg1_4_10_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. H264/Mpeg2 API changes
+    - Improve the calculation of output frame buffer size to get more accurate number.
+    - Add new APIs xxxDecAbort/xxxDecWaitAfter in H264/Mpeg2 LLcode
+      to deal with JIRA 144.
+    - Update OMX IL to support change channel & seek mode for H264/Mpeg2.(JIRA 144)
+    - Add a temporary testbench video_decoder_144_SNI.c to test JIRA 144.
+      (Open macro TB_SEEK to test seek mode, Open macro TB_CHANGE_CHANNEL to
+      test change channel mode.)
+    - Fix the issues mentioned in JIRA 149.
+    - Fix one more output buffer required issues when a normal EOS detected in OMX IL.
+    - Destory omx output thread if idle state is detected.
+    - Add the dynamic link librarys for G1/G2 in folder binary.
+
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-08-05
+ Contents of Relg1_4_9_Verisilicon-Socionext
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. H264 API changes
+    - Add use_adaptive_buffers/guard_size in H264 decoder configuration
+      to set different stategy for adaptive streams(JIRA 131).
+    - Update OMX IL output port parameters for adaptive streams
+      (JIRA 131).
+    - Two excutable binary files are added in folder binary for test purpose.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-07-12
+ Contents of Relg1_4_8_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. H264 API changes
+    - Fix some corner cases for H264 when OMX state is changed from
+      Executing to Idle in the middle of the stream
+    - Revert OMX IL to deal with deal with JIRA 145.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+==================================================
+ Date: 2016-07-11
+ Contents of Relg1_4_7_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    - SW update. MPEG2, H264 API changes
+    - Fix Mpeg2/H264 deadlock issue when OMX state is changed 
+      from Executing to Idle in the middle of the stream
+    - Decode H264 SEI message to get pic_struct and dpb_out_delay
+    - Reflect dpb_output_delay and cpb_removal_delay to DPB bumping process.
+    - Support entry point for Mpeg2/H264.
+    - Replace pthread_yield with posix sched_yield
+    - Fix vp8 build issue when compiling PP test bench.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+
+==================================================
+ Date: 2016-06-21
+ Contents of Relg1_4_6_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - SW update. AVS, RV, VP6 and VP8 API changes
+    - Fix wrong output format info
+
+  2. Contents of the release
+  ------------------------------------------------  
+    SW: GoldenG1_6_38
+    SW: Initial version of G1 OMX SW supporting API changes for
+    AVS, H264, MPEG2, MPEG4, RV, VC1, VP6 and VP8
+
+==================================================
+ Date: 2016-06-03
+ Contents of Relg1_4_5_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - SW update. MPEG4 and VC1 API changes
+    - Fixes to bugs found in regression testing
+
+  2. Contents of the release
+  ------------------------------------------------  
+    SW: GoldenG1_6_37 + h264_mpeg2_api.patch + mpeg4_api.patch + vc1_api.patch
+    SW: Initial version of G1 OMX SW supporting MPEG2 API changes
+
+==================================================
+ Date: 2016-05-20
+ Contents of Relg1_4_4_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - SW update
+    - Fixes to bugs found in regression testing
+
+  2. Contents of the release
+  ------------------------------------------------  
+    SW: GoldenG1_6_36 + 64bit_env.patch + h264_mpeg2_api.patch
+    SW: Initial version of G1 OMX SW supporting MPEG2 and H264 API changes
+
+==================================================
+ Date: 2016-05-13
+ Contents of Relg1_4_3_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - SW update.
+
+  2. Contents of the release
+  ------------------------------------------------  
+    SW: GoldenG1_6_36 + 64bit_env.patch + h264_mpeg2_api.patch
+    SW: Initial version of G1 OMX SW supporting MPEG2 and H264 API changes
+
+==================================================
+ Date: 2016-04-18
+ Contents of Relg1_4_2_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - SW update. MPEG2 and H264 API changes. 
+      * External buffer allocation
+      * Buffer cosumed API call
+
+  2. Contents of the release
+  ------------------------------------------------  
+    SW: G1_ADDR64_2015Nov13_vp7bug_fixed + g1_h264_mpeg2_release.zip + Relg1_4_1_Verisilicon-Socionext-GPL.tar.gz
+
+
+==================================================
+ Date: 2015-11-17
+ Contents of Relg1_4_1_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - SW update.
+
+  2. Contents of the release
+  ------------------------------------------------  
+    SW: G1_ADDR64_2015Nov13_vp7bug_fixed
+
+==================================================
+ Date: 2015-11-05
+ Contents of Relg1_4_0_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - Support for async ACLK/PCLK
+    - SWREG 54 bit  #5 added to indicate that RTL supports
+      64 bits address space.
+
+  2. Contents of the release
+  ------------------------------------------------  
+    HW: G1_ADDR64_2015Nov05
+    SW: G1_ADDR64_2015Sep29
+
+==================================================
+ Date: 2015-11-02
+ Contents of Relg1_3_1_Verisilicon-Socionext
+==================================================
+ THIS WAS NOT DELIVERED TO CUSTOMER BUT
+ REPLACED BY 4.0!
+
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+   Previous release 2.0 and 3.0 had incorrect decoder SW. 
+   They did not include the 64 bit address changes.
+   
+   This software release fixes that issue.
+
+   (Internal tag for SW: G1_ADDR64_2015Sep29)
+
+==================================================
+ Date: 2015-10-19
+ Contents of Relg1_3_0_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    Test bench updated and test data included.
+
+==================================================
+ Date: 2015-09-29
+ Contents of Relg1_2_0_Verisilicon-Socionext
+==================================================
+
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    - G1 pre-release with 64 bit address
+    - g1 pre-fix added to all files and instance names
+    - SW modified for 64 bit address.
+    - False path constraint of synth script modified.
+    - This release contains the RTL, system model binaries and SW.
+    - Please note the verification has not been completed and the
+      package may need to be updated.
+    - Test data will be delivered later on in a separate package.
+
+  2. Contents of the release
+  ------------------------------------------------
+    General Release settings:
+    .........................
+    HW language: verilog
+    Include reference scripts for synthesis: yes
+
+    Contents of the release:
+    ........................
+    With HW contents: rtl_hierarchy rtl_core toplevel_axiapb rom_codes
+
+    With SYS Binaries: yes
+
+    With HW Test contents: axiapb_verilog
+
+    With SW contents :
+     common_sw_source h264_sw_source mpeg4_sw_source jpeg_sw_source vc1_sw_source mpeg2_sw_source vp6_sw_source vp8_sw_source rv_sw_source avs_sw_source pp_sw_source
+
+    With SW Test contents:
+    swhw_test h264_sw_test mpeg4_sw_test jpeg_sw_test vc1_sw_test mpeg2_sw_test vp6_sw_test vp8_sw_test rv_sw_test avs_sw_test pp_sw_test
+
+    Include RM parser to RV test bench: yes
+
+    Include Docs: yes
+
+
+    With the following internal tags:
+    .................................
+    HW: G1_ADDR64_2015Sep29
+    SW: G1_ADDR64_2015Sep29
+    HW TB: G1_ADDR64_2015Sep29
+
+
+==================================================
+ Date: 2015-09-01
+ Contents of Relg1_1_0_Verisilicon-Socionext
+==================================================
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+     First delivery to Socionext
+
+  2. Contents of the release
+  ------------------------------------------------
+    General Release settings:
+    .........................
+    HW language: verilog
+    Include reference scripts for synthesis: yes
+
+    Contents of the release:
+    ........................
+    With HW contents: rtl_hierarchy rtl_core toplevel_axiapb rom_codes
+
+    With SYS Binaries: no
+
+    With HW Test contents: axiapb_verilog
+
+    With SW contents :
+     common_sw_source h264_sw_source mpeg4_sw_source jpeg_sw_source vc1_sw_source mpeg2_sw_source vp6_sw_source vp8_sw_source rv_sw_source avs_sw_source pp_sw_source
+
+    With SW Test contents:
+    swhw_test h264_sw_test mpeg4_sw_test jpeg_sw_test vc1_sw_test mpeg2_sw_test vp6_sw_test vp8_sw_test rv_sw_test avs_sw_test pp_sw_test
+
+    Include RM parser to RV test bench: yes
+
+    Include Docs: yes
+
+
+    With the following internal tags:
+    .................................
+    HW: cfg_hwg1_5_11_h264hp_mvc_mp4asp_jpeg_vc1ap_mp2_vp68_avs_avsplus_rv_divx_pp_adedis_d4096_p4096_axiapb
+    SW: GoldenG1_6_35
+    HW TB: 
+
+    Release tag settings:
+    .....................
+    Release tag: Relg1_1_0_Verisilicon-Socionext
+    Date: 2015-09-01
+
+

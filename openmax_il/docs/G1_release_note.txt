@@ -1,0 +1,117 @@
+RELEASE NOTES
+Hantro-OpenMAX
+Date: 12/09/2016
+COPYRIGHT Hantro 2016. All Rights Reserved.
+
+
+Date: 09 December 2016
+TAG: omxil_dec_2_0_23
+
+1. Introduction
+
+Released modules:
+ - OpenMAX IL decoder component for Hantro G1 HW decoder
+ - OpenMAX Test client
+
+Required modules not included in this release:
+ - Bellagio core implementation for OpenMAX (libomxil-bellagio-0.9.3).
+  -> Configuration modified to install in BUILD directory
+ - Hantro G1 decoder product software
+
+
+2. This release supports:
+ - DIVX, H263, H264, MJPEG, MPEG2, MPEG4, RV, SORENSON, VC1, VP6, VP8,
+   AVS, JPEG and WEBP formats for G1 decoder
+ - Conformant to OpenMAX IL v1.1.2 base profile
+
+
+3. Building Instructions
+Release contains one component and test software for it:
+ - OpenMAX IL G1 HW decoder (omxil/source/decoder)
+ - testclient (omxil/source/decoder/test)
+
+
+ 1.) Preconditions:
+  - libomxil-bellagio-0.9.3 is installed to
+    libomxil-bellagio-0.9.3/build directory
+  - G1 API headers and libraries are available
+  - unzip g1_decoder_omx_testdata.tar.gz to same directory with omxil
+
+ 2.) Configure and build G1 HW decoder component
+  - set working directory to omxil/source/decoder
+  - edit Makefile
+    * Set correct path to BELLAGIO_ROOT variable
+  - execute gmake
+    * "gmake install"
+
+  3.) Configure and build testclient for G1 HW decoder
+   - set working directory to omxil/source/decoder/test
+   - edit Makefile
+     * Set correct compiler (CC)
+   - execute gmake
+     * "gmake install"
+   - run
+     * ./customer_test_g1.sh
+
+
+4. Compatible Products and Environments
+This product has been tested on the following product:
+ - G1 HW decoder
+
+
+5. Implemented Features
+The following features appear in this release:
+ - AVS decoder
+ - DIVX decoder
+ - H263 decoder
+ - H264 decoder
+ - JPEG decoder
+ - MJPEG decoder
+ - MPEG2 decoder
+ - MPEG4 decoder
+ - RV decoder
+ - VC1 decoder
+ - VP6 decoder
+ - VP8 decoder
+ - WEBP decoder
+ - post processing
+ - OMX Tunneling
+ - Dynamic traces
+ - Preliminary support for Android native buffers
+    Use CFLAGS += -DUSE_ANDROID_NATIVE_BUFFER
+ - Component can set output port buffer size
+    Use CFLAGS += -DCOMPONENT_SETS_OUTPUT_PORT_BUFFER_SIZE
+ - Support for sending common output crop information
+    Use CFLAGS += -DUSE_OUTPUT_CROP
+ - Support externally allocated frame buffers and buffer consumed
+    Use CFLAGS += -DUSE_EXTERNAL_BUFFER -DUSE_OUTPUT_RELEASE
+ - Support ALLOC_PRIVATE structure for accessing HW physical address
+    Use CFLAGS += -DUSE_ALLOC_PRIVATE
+ - Support OUTPUT_BUFFER_PRIVATE struct for accessing HW physical
+   address
+    Use CFLAGS += -DUSE_OUTPUT_BUFFER_PRIVATE
+
+6. Debugging and Tracing
+
+Decoder:
+ For logging use DENABLE_DBGT_TRACE for CFLAGS in Makefile
+ CFLAGS += -DENABLE_DBGT_TRACE
+
+ Activate all traces:
+    Android:
+    adb shell setprop debug.g1dec.trace 0xffff
+    Bash:
+    export debug_g1dec_trace=0xffff
+
+ Activate light traces and prolog/epilog
+    Android:
+    adb shell setprop debug.g1dec.trace 0x33
+    Bash:
+    export debug_g1dec_trace=0x33
+
+7. Known Bugs and Limitations
+
+G1 HW decoder:
+   OpenMAX Interop profile implementation doesn't support suspension.
+   OpenMAX Interop profile implementation doesn't support resource management.
+

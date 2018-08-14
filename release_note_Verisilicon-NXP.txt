@@ -1,0 +1,200 @@
+--------------------------------------------------------------------------------
+--       Copyright (c) 2015-2017, VeriSilicon Inc. All rights reserved        --
+--                                                                            --
+-- This software is confidential and proprietary and may be used only as      --
+--   expressly authorized by VeriSilicon in a written licensing agreement.    --
+--                                                                            --
+--         This entire notice must be reproduced on all copies                --
+--                       and may not be removed.                              --
+--                                                                            --
+--------------------------------------------------------------------------------
+-- Redistribution and use in source and binary forms, with or without         --
+-- modification, are permitted provided that the following conditions are met:--
+--   * Redistributions of source code must retain the above copyright notice, --
+--       this list of conditions and the following disclaimer.                --
+--   * Redistributions in binary form must reproduce the above copyright      --
+--       notice, this list of conditions and the following disclaimer in the  --
+--       documentation and/or other materials provided with the distribution. --
+--   * Neither the names of Google nor the names of its contributors may be   --
+--       used to endorse or promote products derived from this software       --
+--       without specific prior written permission.                           --
+--------------------------------------------------------------------------------
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"--
+-- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE  --
+-- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE --
+-- ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE  --
+-- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR        --
+-- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF       --
+-- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS   --
+-- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN    --
+-- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)    --
+-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE --
+-- POSSIBILITY OF SUCH DAMAGE.                                                --
+--------------------------------------------------------------------------------
+--                                                                            --
+--  File Name           : release_note_Verisilicon.txt                        --
+--                                                                            --
+--  Abstract            : Release note & TOC.                                 --
+--                                                                            --
+--------------------------------------------------------------------------------
+==================================================
+ Date: 2017-05-19
+ Contents of Relg1g2_1.0.4_Verisilicon-NXP
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    Return status "NO_DECODING_BUFFER" to OMX IL layer, so customer can handle this
+	status by themselves.
+
+    Refine LL API xxxDecAbort/xxxDecAbortAfter to support SEEK operation without
+    clearing DPB buffer status. In this way the client doesn't need to add buffer again.
+
+    Disable macro "CLEAR_HDRINFO_IN_SEEK" as customer requested.
+
+    Fix typo reported by customer.
+    Change "#ifdef GET_OUTPUT_BUFFER_NON_BLOCK" to "#ifndef GET_OUTPUT_BUFFER_NON_BLOCK".
+
+    Update the license for all source code.
+
+==================================================
+ Date: 2017-04-21
+ Contents of Relg1g2_1.0.3_Verisilicon-NXP
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    Update OMX IL to support non-blocking mode for all formats.
+
+    Unify driver to suppor G1 and G2 simultaneously.
+
+    Enable compiling option "CUSTOM_FMT_SUPPORT" by default to support DIVX streams.
+
+    Fix the bugs of RV/VP6/VP8 decoder in non-blocking mode.
+    (The MPEG4 decoder only support H.263 streams with Profile0 and level 10~70,
+     So some H.263 streams with higher profile are not supported)
+
+    Refine relative code to enhance the robustness of decoder.
+
+
+==================================================
+ Date: 2017-03-31
+ Contents of Relg1g2_1.0.2_Verisilicon-NXP
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    Support non-block of H264/AVS/MPEG4/MPEG2/RV/VC1/VP6/VP8 decoder when request
+    free output buffer. Compiling option "USE_NON_BLOCKING" is added to enable or
+    disable this feature.
+
+    Support non-block of function DecNextPicture for H264/AVS/MPEG4/MPEG2/RV/VC1
+    /VP6/VP8 format. Compiling option "USE_ONE_THREAD_WAIT" is added to enable or
+    disable this feature.
+
+    Set addr64_support to 1 to support 64bit SW compatible with 32bit HW.
+
+    Fix the deadlock in function CheckCoreIrq().
+
+    Fix some coding-style issues in TestBench/ctrlSW/driver.
+
+    Clear all warnings in TestBench/ctrlSW/driver.
+    (Because driver is under development, the warning should be cleared in next release)
+
+    Fix one typo "USE_EXTERNA*l*_BUFFER" in the end of the function "HevcDecDecode".
+
+    Fix array 'fourcc[]' overflow issue in testbench.
+    (It is not reproduced in our env, maybe fixed, please double check)
+
+    Enable compiling options "USE_NON_BLOCKING, USE_ONE_THREAD_WAIT, USE_64BIT_ENV,
+    USE_EXTERNAL_BUFFER, USE_OUTPUT_RELEASE" by default for all formats.
+
+
+==================================================
+ Date: 2017-02-17
+ Contents of Relg1g2_1.0.1_Verisilicon-NXP
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    Add libg2hw.a for G2 and lib8170hw.a for G1 to release package.
+    
+    Add target arm_pclinux to compile G1/G2 system model/control SW for arm environment.
+    (Ex. Use "make clean arm_pclinux USE_64BIT_ENV=y USE_OUTPUT_RELEASE=y USE_EXTERNAL_BUFFER=y"
+     to compile G1; Use "make clean g2dec ENV=arm_pclinux USE_64BIT_ENV=y" to compile G2)
+     
+    Fix target versatile to compile G1 kernel driver/control SW for arm environment.
+    (Ex. Use "make clean versatile USE_64BIT_ENV=y USE_OUTPUT_RELEASE=y USE_EXTERNAL_BUFFER=y"
+     to compile G1)
+     
+    Fix target arm_linux to compile G2 kernel driver/control SW for arm environment.
+    (Ex. Use "make clean g2dec ENV=arm_linux USE_64BIT_ENV=y" to compile G2)
+    
+    Add OMX code to release package.
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+      With SW contents :
+        common_sw_source h264_sw_source mpeg4_sw_source jpeg_sw_source vc1_sw_source mpeg2_sw_source vp6_sw_source vp8_sw_source rv_sw_source avs_sw_source pp_sw_source
+        hevc_sw_source vp9_sw_source
+      With SW Test contents:
+        swhw_test h264_sw_test mpeg4_sw_test jpeg_sw_test vc1_sw_test mpeg2_sw_test vp6_sw_test vp8_sw_test rv_sw_test avs_sw_test hevc_sw_test vp9_sw_test
+
+
+==================================================
+ Date: 2017-01-22
+ Contents of Relg1g2_1.0.0_Verisilicon-NXP
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    Unified DWL interface and memalloc driver for g1/g2.
+    Unified control SW for g1/g2.
+    Unified coding convention (variable/function/struct names, indent/tab/bracket...) for g1/g2.
+    Support No-blocking of HEVC/VP9 decoder when request free output buffer.
+    (NOTE: Building tools & makefile have not been not unified yet.)
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+      With SW contents :
+        common_sw_source h264_sw_source mpeg4_sw_source jpeg_sw_source vc1_sw_source mpeg2_sw_source vp6_sw_source vp8_sw_source rv_sw_source avs_sw_source pp_sw_source
+        hevc_sw_source vp9_sw_source
+      With SW Test contents:
+        swhw_test h264_sw_test mpeg4_sw_test jpeg_sw_test vc1_sw_test mpeg2_sw_test vp6_sw_test vp8_sw_test rv_sw_test avs_sw_test pp_sw_test hevc_sw_test vp9_sw_test
+
+
+==================================================
+ Date: 2016-11-25
+ Contents of Relg1_1_0_Verisilicon-NXP
+=================================================
+  1. List of changes compared to previous release
+  ------------------------------------------------
+    Pre release to NXP
+
+  2. Contents of the release
+  ------------------------------------------------
+    G1 SW: GoldenG1_6_38
+      With SW contents :
+        common_sw_source h264_sw_source mpeg4_sw_source jpeg_sw_source vc1_sw_source mpeg2_sw_source vp6_sw_source vp8_sw_source rv_sw_source avs_sw_source pp_sw_source
+      With SW Test contents:
+        swhw_test h264_sw_test mpeg4_sw_test jpeg_sw_test vc1_sw_test mpeg2_sw_test vp6_sw_test vp8_sw_test rv_sw_test avs_sw_test pp_sw_test
+
+    OMX SW: omxil_dec_2_0_23
+       Supporting h264, mpeg4, jpeg, vc1, mpeg2, vp6, vp8, rv, avs
+
+    G1 SW document is not updated yet. would be released later.
+
+  3. New added compiling options for G1 SW
+  ------------------------------------------------
+     USE_EXTERNAL_BUFFER   enables or disables allocating buffers externally.
+     USE_OUTPUT_RELEASE    enables or disables output buffer released by client.
+     CLEAR_HDRINFO_IN_SEEK enables or disables clearing stream header parameters(SPS/PPS) after SEEK operation.
+     USE_PICTURE_DISCARD   enables or disables discard the repeat displayed frame.
+     USE_RANDOM_TEST       enables or disables random error generation in control SW(Only used in internal test).
+
+  4. Known Limitations
+  ------------------------------------------------
+     Once client called xxxDecAbort() to abort the decoding, client should call xxxDecAbortAfter() to clear the internal variable/parameters in decoder.
+     If client want to resume the decoder after the abort, client should call xxxDecAddBuffer() to add the external buffers into decoder.
+
+  5. Contact Information:
+  ------------------------------------------------
+  hantro_support@verisilicon.com
+  https://jira.verisilicon.fi:8080/secure/Dashboard.jspa

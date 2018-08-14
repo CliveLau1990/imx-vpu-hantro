@@ -1,0 +1,10 @@
+
+--- Module:   ..\..\source\pp\ppapi.c
+
+--- Module:   ..\..\source\pp\ppinternal.c
+
+--- Module:   ..\..\source\common\regdrv.c
+                                           _
+static const u32 vc1RegSpec[HWIF_LAST_REG+1][3] = {
+..\..\source\common\regdrv.c  62  Warning 641: Converting enum 'hwIfName_e' to
+    int

@@ -1,0 +1,48 @@
+
+!input=../../../../testdata_customer/G1/input/
+!output=../../../../testdata_customer/G1/output/
+
+# h263, 176x144, 20 frames
+-id DEC_OMX_CASE_1_2_NOPP -h263 -iw 176 -ih 144 -w 176 -h 144 -i $(input)case_12/stream.mpeg4 -rd $(output)case_12 -rf out_w176h144.yuv
+
+# jpeg, 640x480
+-id DEC_OMX_CASE_2_1_NOPP -jpeg -iw 640 -ih 480 -w 640 -h 480 -i $(input)case_1001/stream.jpg -rd $(output)case_1001 -rf out.yuv
+
+# mpeg4, 176x144, 21 frames
+-id DEC_OMX_CASE_3_2_NOPP -mpeg4 -iw 176 -ih 144 -w 176 -h 144 -i $(input)case_46/stream.mpeg4 -rd $(output)case_46 -rf out_w176h144.yuv
+
+# h264, 352x288, 60 frames
+-id DEC_OMX_CASE_3_7_NOPP -h264 -iw 352 -ih 288 -w 352 -h 288 -i $(input)case_703/stream.h264 -rd $(output)case_703 -rf out.yuv
+
+# vc1, 352x288, 20 frames
+-id DEC_OMX_CASE_4_12_NOPP -wmv -iw 352 -ih 288 -w 352 -h 288 -i $(input)case_1510/stream.rcv -rd $(output)case_1510_pipe -rf out_w352h288.yuv
+
+# sorenson, 320x240, 18 frames
+-id DEC_OMX_CASE_10_13_NOPP -sorenson -iw 320 -ih 240 -w 320 -h 240 -i $(input)case_37/stream.mpeg4 -rd $(output)case_37 -rf out_w320h240.yuv
+
+# mpeg2, 352x288, 6 frames
+-id DEC_OMX_CASE_11_1_NOPP -mpeg2 -iw 352 -ih 288 -w 352 -h 288 -i $(input)case_3002/stream.mpeg2 -rd $(output)case_3002_pipe -rf out_w352h288.yuv
+
+# divx, 640x368, 25 frames
+-id DEC_OMX_CASE_13_2_NOPP -divx -iw 640 -ih 368 -w 640 -h 368 -i $(input)case_6697/stream.mpeg4 -rd $(output)case_6697 -rf out_w640h368.yuv
+
+# divx3, 320x240, 30 frames
+-id DEC_OMX_CASE_13_7_NOPP -divx3 -dh 240 -dw 320 -w 320 -h 240 -i $(input)case_6605/stream.mpeg4 -rd $(output)case_6605 -rf out_w320h240.yuv
+
+# rv, 352x288, 60 frames
+-id DEC_OMX_CASE_14_1_NOPP -rv -iw 352 -ih 288 -w 352 -h 288 -i $(input)case_3500/stream.rm -rd $(output)case_3500 -rf out_w352h288.yuv
+
+# avs, 720x576, 3 frames
+-id DEC_OMX_CASE_15_1_NOPP -avs -iw 720 -ih 576 -w 720 -h 576 -i $(input)case_8535/stream.avs -rd $(output)case_8535  -rf out.yuv
+
+# vp8, 176x144, 29 frames
+-id DEC_OMX_CASE_15_2_NOPP -vp8 -iw 176 -ih 144 -w 176 -h 144 -i $(input)case_2/stream.ivf -rd $(output)case_2 -rf out.yuv
+
+# webp, 176x144, 1 frame, YUV420 semi-planar
+-id DEC_OMX_CASE_15_3_NOPP -webp -iw 176 -ih 144 -w 176 -h 144 -i $(input)case_10100/stream.webp -rd $(output)case_10100 -rf out.yuv
+
+# h264 MVC, 640x480, 18 frames, YUV420 semi-planar
+-id DEC_OMX_CASE_15_5 -h264 -mvc -iw 640 -ih 480 -w 640 -h 480 -i $(input)case_9203/stream.h264 -rd $(output)case_9203 -rf pp_out.yuv
+
+# vp6, 320x240, 20 frames, YUV420 semi-planar
+-id DEC_OMX_CASE_16_1 -vp6 -iw 320 -ih 240 -w 320 -h 240 -i $(input)case_1239/stream.vp6 -rd $(output)case_1239 -rf out.yuv

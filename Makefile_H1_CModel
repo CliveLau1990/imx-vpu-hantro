@@ -1,0 +1,62 @@
+CC = $(CROSS_COMPILE)gcc --sysroot=$(SDKTARGETSYSROOT)
+AR = $(CROSS_COMPILE)ar
+CFLAGS ?= -O2
+
+
+SOURCE_ROOT = ./h1_encoder/software
+LIBH1NAME = libhantro_h1
+SONAMEVERSION = 1
+LIBH1_LIBS = $(SOURCE_ROOT)/linux_reference/libh1enc.a
+RELEASE_DIR = bin
+
+#TARGET = versatile
+TARGET = system
+
+#CFLAGS += -DENC_MODULE_PATH=\"/dev/mxc_hantro_h1\"
+
+all: $(LIBH1NAME).so $(LIBH1NAME).a test
+
+install: install_headers
+	@mkdir -p $(DEST_DIR)$(libdir)
+	@mkdir -p $(DEST_DIR)/unit_tests/VPU/hantro
+	cp -P $(LIBH1NAME).so* $(DEST_DIR)$(libdir)
+	cp $(SOURCE_ROOT)/linux_reference/test/h264/h264_testenc $(DEST_DIR)/unit_tests/VPU/hantro
+	cp $(SOURCE_ROOT)/linux_reference/test/vp8/vp8_testenc $(DEST_DIR)/unit_tests/VPU/hantro
+	cp $(SOURCE_ROOT)/linux_reference/test/jpeg/jpeg_testenc $(DEST_DIR)/unit_tests/VPU/hantro
+
+install_headers:
+	@mkdir -p $(DEST_DIR)/usr/include
+	cp $(SOURCE_ROOT)/inc/*.h $(DEST_DIR)/usr/include
+
+
+$(LIBH1NAME).a:
+	make -C $(SOURCE_ROOT)/linux_reference/ $(TARGET) USE_64BIT_ENV=y ARCH="" CC="$(CC)" AR="$(AR) -rc"
+	$(AR) -rc $@ $(LIBH1_LIBS) 
+
+$(LIBH1NAME).so.$(SONAMEVERSION): $(LIBH1NAME).a
+	$(CC) -o $@ $(LDFLAGS) -shared -nostartfiles -Wl,-soname,$@ -Wl,--whole-archive $(LIBH1_LIBS) -Wl,--no-whole-archive
+
+$(LIBH1NAME).so: $(LIBH1NAME).so.$(SONAMEVERSION)
+	ln -fs $< $@
+
+
+test:
+	make -C $(SOURCE_ROOT)/linux_reference/test/h264 USE_64BIT_ENV=y ARCH="" $(TARGET) CC="$(CC)"
+	make -C $(SOURCE_ROOT)/linux_reference/test/jpeg USE_64BIT_ENV=y ARCH="" $(TARGET) CC="$(CC)"
+	make -C $(SOURCE_ROOT)/linux_reference/test/vp8 USE_64BIT_ENV=y ARCH="" $(TARGET) CC="$(CC)"
+	cp $(SOURCE_ROOT)/linux_reference/test/h264/h264_testenc $(RELEASE_DIR)/
+	cp $(SOURCE_ROOT)/linux_reference/test/vp8/vp8_testenc $(RELEASE_DIR)/
+	cp $(SOURCE_ROOT)/linux_reference/test/jpeg/jpeg_testenc $(RELEASE_DIR)/
+
+#%.o: %.c
+#	$(CC) -Wall -fPIC $(CFLAGS) -c $^ -o $@
+
+
+.PHONY: clean
+clean:
+	rm -f $(LIBH1NAME).* 
+	make -C $(SOURCE_ROOT)/linux_reference/ clean
+	make -C $(SOURCE_ROOT)/linux_reference/test/h264 clean
+	make -C $(SOURCE_ROOT)/linux_reference/test/jpeg clean
+	make -C $(SOURCE_ROOT)/linux_reference/test/vp8 clean
+	 

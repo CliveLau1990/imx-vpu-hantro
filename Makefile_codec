@@ -1,0 +1,61 @@
+CC = $(CROSS_COMPILE)gcc --sysroot=$(SDKTARGETSYSROOT)
+AR = $(CROSS_COMPILE)ar
+CFLAGS ?= -O2
+
+SOURCE_ROOT = decoder_sw/software
+OMX_SRC_ROOT = openmax_il/source
+
+INCLUDE_HEADERS = -I$(OMX_SRC_ROOT) -I$(OMX_SRC_ROOT)/../headers/ -I$(OMX_SRC_ROOT)/decoder -I$(SOURCE_ROOT)/source/inc/
+
+LIBS = -L./ -lhantro -lg1 -lpthread
+
+CFLAGS += -DSET_OUTPUT_CROP_RECT -DUSE_EXTERNAL_BUFFER -DUSE_OUTPUT_RELEASE -DVSI_API -DIS_G1_DECODER -DENABLE_CODEC_VP8 -DVP8_HWTIMEOUT_WORKAROUND -DENABLE_CODEC_MJPEG -DGET_FREE_BUFFER_NON_BLOCK -DDOWN_SCALER
+
+CFLAGS += $(INCLUDE_HEADERS)
+
+OBJ = $(OMX_SRC_ROOT)/decoder/codec_hevc.o \
+	$(OMX_SRC_ROOT)/decoder/codec_vp9.o \
+	$(OMX_SRC_ROOT)/decoder/codec_h264.o \
+	$(OMX_SRC_ROOT)/decoder/codec_avs.o \
+	$(OMX_SRC_ROOT)/decoder/codec_jpeg.o \
+	$(OMX_SRC_ROOT)/decoder/codec_mpeg2.o \
+	$(OMX_SRC_ROOT)/decoder/codec_mpeg4.o \
+	$(OMX_SRC_ROOT)/decoder/codec_rv.o \
+	$(OMX_SRC_ROOT)/decoder/codec_vc1.o \
+	$(OMX_SRC_ROOT)/decoder/codec_vp6.o \
+	$(OMX_SRC_ROOT)/decoder/codec_vp8.o \
+	$(OMX_SRC_ROOT)/decoder/codec_webp.o \
+	$(OMX_SRC_ROOT)/decoder/test/queue.o \
+	$(OMX_SRC_ROOT)/OSAL.o
+
+LIBNAME = libcodec
+SONAMEVERSION = 1
+
+VERSION = imx8mq
+
+all: $(LIBNAME).so $(LIBNAME).a
+
+install: install_headers
+	@mkdir -p $(DEST_DIR)/usr/lib
+	cp -P $(LIBNAME).* $(DEST_DIR)/usr/lib
+
+install_headers:
+	@mkdir -p $(DEST_DIR)/usr/include
+	cp $(OMX_SRC_ROOT)/*.h $(DEST_DIR)/usr/include
+
+
+%.o: %.c
+	$(CC) -Wall -fPIC $(CFLAGS) -c $^ -o $@
+
+$(LIBNAME).so.$(SONAMEVERSION): $(OBJ)
+	$(CC) -shared -nostartfiles -Wl,-soname,$@ $^ -o $@ $(LDFLAGS) $(LIBS)
+
+$(LIBNAME).so: $(LIBNAME).so.$(SONAMEVERSION)
+	ln -s $< $@
+
+$(LIBNAME).a: $(OBJ)
+	$(AR) -rc $@  $^
+
+.PHONY: clean
+clean:
+	rm -f $(LIBNAME).* $(OBJ)

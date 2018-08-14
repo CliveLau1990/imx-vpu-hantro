@@ -1,0 +1,319 @@
+--------------------------------------------------------------------------------
+--                                                                            --
+--           This confidential and proprietary software may be used           --
+--              only as authorized by a licensing agreement from              --
+--                                                                            --
+--                            Hantro Products Oy.                             --
+--                                                                            --
+--      In the event of publication, the following notice is applicable:      --
+--                                                                            --
+--                   (C) COPYRIGHT 2009 HANTRO PRODUCTS OY                    --
+--                            ALL RIGHTS RESERVED                             --
+--                                                                            --
+--    The entire notice above must be reproduced on all authorized copies.    --
+--                                                                            --
+--------------------------------------------------------------------------------
+--                                                                            --
+--  File Name           : release_note_Verisilicon.txt                        --
+--                                                                            --
+--  Abstract            : Release note & TOC.                                 --
+--                                                                            --
+--------------------------------------------------------------------------------
+
+==================================================
+ Date: 2016-12-09
+ Contents of Relg2main10_5_20_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Add macro "USE_RANDOM_TEST" to support random stream error generation in HEVC/VP9 LL code.
+  - Added error concealment mechanism in VP9 decoder.
+  - Rename the function "xxxDecWaitAfter" to "xxxDecAbortAfter".
+  - Update LL/OMX IL code of HEVC/VP9 to support I-pic playback by using CommandFlush(ALL)(JIRA 180).
+  - Add abort path in the while-loop of pop_propagate_data to avoid potential deadlock(JIRA 166).
+  - Update OMX IL code to fix the illegal nTimeStamp for the first output buffer after statechange(JIRA 183).
+  - Update OMX IL code to handle the return value "XXXDEC_ABORTED" in function endofstream()(JIRA 184).
+
+
+==================================================
+ Date: 2016-11-16
+ Contents of Relg2main10_5_19_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - A supplementary package for the previous release(2016-11-15).
+  - Add checker in SPS/PPS decoding function for HEVC.
+  - Add guard-code in HEVC to improve error tolerant ability.
+
+==================================================
+ Date: 2016-11-15
+ Contents of Relg2main10_5_18_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    - Update VP9 to discard repeat frames.(JIRA 177)
+      (NOTE: macro USE_PICTURE_DISCARD=n by default, please open this macro to support new feature)
+    - Add guard-code in HEVC to improve error tolerant ability.(JIRA 171)
+    - Add checker in SPS/PPS/VPS/SEI decoding function for HEVC.
+
+==================================================
+ Date: 2016-10-31
+ Contents of Relg2main10_5_17_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    - Fix HEVC HW hangups issues caused by error streams(JIRA 171).
+      (NOTE: Macro USE_FAST_EC is added to do fast error concealment)
+    - Update VP9 Minimum resolution supported to 72x72(JIRA 173).
+    - Fix HW system error in VP9 playback(JIRA 173).
+    - Add escape path in timestamp/markbuffer pop loop in async_dispatch_frame_buffer(JIRA 166).
+    - Fix the bug occured in previous release which caused deadlock in VP9 dynamic port reconfig(JIRA 131).
+
+
+==================================================
+ Date: 2016-10-21
+ Contents of Relg2main10_5_16_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    - Update OMX IL code of HEVC/VP9 to fix Bufferlist overwritten issue
+      when outport buffer is returned out-of-order(JIRA 174).
+    - Update OMX IL code to fix corner cases in VP9 dynamic port reconfig(JIRA 131).
+    - Update LL code to fix unexpected self statechange issues for VP9(JIRA 170).
+    - Update OMX IL code to clear buffer header parameters when output buffer
+      returned in CommandFlush or StateChange sequence(JIRA 175).
+    - Update OMX IL code to fix the potential deadlock occured in pop_propagate_data(JIRA 116).
+    - Update OMX IL code to clear warning message when decoder return STREAM_NOT_SUPPORTED(JIRA 170).
+
+
+==================================================
+ Date: 2016-09-30
+ Contents of Relg2main10_5_15_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    - Fix hangup issues in HEVC(JIRA 171).
+    - Update LL code to support HEVC multi-vps streams decoding(JIRA 155).
+    - Fix unexpected self statechange issues for HEVC(JIRA 170).
+
+
+==================================================
+ Date: 2016-09-23
+ Contents of Relg2main10_5_14_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    - Support adaptive streams feature for VP9(131g).
+    - Correct the display order due to the HRD bumping algorizm in HEVC(JIRA 169).
+
+
+==================================================
+ Date: 2016-09-19
+ Contents of Relg2main10_5_13_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Fix compiling issue on Android platform(JIRA 152).
+    (NOTE: we can not guarantee all errors have been fixed because of lack
+     of environment)
+
+
+==================================================
+ Date: 2016-09-14
+ Contents of Relg2main10_5_12_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Reorder nTimeStamp and MarkBuffer of HEVC/VP9(JIRA 116).
+  - Set the minimum supported resolution for VP9 to 48x48.
+
+
+==================================================
+ Date: 2016-09-09
+ Contents of Relg2main10_5_11_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Clear SPS/PPS information for HEVC after CommangFlush/StateChange(JIRA 164a).
+  - Update SEI extraction process and low delay bumping algorithm for HEVC(JIRA 168).
+  - Add frame_rate in structure storage to store the frame rate for HEVC,
+    if VPS isn’t presented, frame_rate is 0(JIRA 155).
+  - Fix SEGV issues when input buffer has no input data except for EoS(JIRA 165).
+  - Fix the OMX SEGV issue after CommangFlush mentioned in JIRA 147.
+  - Fix Sideeffect of adaptiveStreaming mode mentioned in JIRA 162.
+
+
+==================================================
+ Date: 2016-08-21
+ Contents of Relg2main10_5_10_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Correct picture information before resolution change for VP9/HEVC(JIRA 156b).
+  - Support adaptive streams feature without extra DDR for VP9(131d).
+    (NOTE: Client should make sure that the size of extra buffer is large than
+    the maximum requaired buffer size by decoder)
+  - Send the pic decode id (HEVC/VP9) to OMX client(JIRA 116).
+  - Fix the potential timing/deadlock issues in LL code/OMX IL according to the PPT came from SNI.
+  
+
+==================================================
+ Date: 2016-08-12
+ Contents of Relg2main10_5_9_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Change the max supported external buffer numbers from 10 to 16 in VP9 LL code.
+  - Update OMX IL to support FLUSH command.
+  - Update OMX test bench to support FLUSH command.
+    (Open macro TB_FLUSH to test flush command)
+
+
+==================================================
+ Date: 2016-08-10
+ Contents of Relg2main10_5_8_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Add new API Vp9DecAbort/Vp9DecWaitAfter in VP9 LL Code
+      to deal with JIRA 144.
+  - Update OMX IL to support change channel & seek mode for VP9.(JIRA 144)
+  - Update video_decoder_144_SNI.c to test JIRA 144 for VP9.
+  - Replace queue.c/queue.h with the new one.
+  - Revert decoder.c to set the EOS flag for last output buffer.
+  - Fix the deadlock risk at a normal EOS in omx output thread.
+
+==================================================
+ Date: 2016-08-08
+ Contents of Relg2main10_5_7_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Add new API HevcDecAbort/HevcDecWaitAfter in HEVC LL Code
+      to deal with JIRA 144.
+  - Update OMX IL to support change channel & seek mode for HEVC.(JIRA 144)
+  - Add a temporary testbench video_decoder_144_SNI.c to test JIRA 144.
+    (Open macro TB_SEEK to test seek mode, Open macro TB_CHANGE_CHANNEL to
+    test change channel mode.)
+  - Fix the issues mentioned in JIRA 149.
+  - Fix one more output buffer required issues when a normal EOS detected in OMX IL.
+  - Destory omx output thread if idle state is detected.
+
+
+==================================================
+ Date: 2016-08-02
+ Contents of Relg2main10_5_6_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+  - Fix logic errors in low level decoder lib for adaptive streams(JIRA 131).
+  - Correct the type of nGuardSize which is defined in vsi_vendor_ext.h.
+  - Fix minor coding style issues in decoder.c.
+
+
+==================================================
+ Date: 2016-07-27
+ Contents of Relg2main10_5_5_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    - Update G2_release_note.txt and OMX_IL_change_note.txt
+    - Input validation check for RbmAbort in HEVC.
+NOTE: This package is released to support adaptive streams feature(JIRA 131).
+Please focus on this new feature firstly. The workaround for change-channel
+feature(JIRA 144) is also contained in this package but not stable.
+A full/stable solution for JIRA 144 will be released later.
+
+
+==================================================
+ Date: 2016-07-25
+ Contents of Relg2main10_5_4_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    Software update.
+    - Fix VP9 segment fault issue and deadlock risk when when aborting
+      VP9 decoder.
+    - Add use_adaptive_buffers/guard_size in HEVC decoder configuration
+      to set different stategy for adaptive streams.
+    - Update OMX IL output port parameters for adaptive streams 
+      (JIRA 131).
+
+
+
+==================================================
+ Date: 2016-07-12
+ Contents of Relg2main10_5_3_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    Software update.
+    - Fix VP9 deadlock issue when OMX state is changed
+      from Executing to Idle in the middle of the stream.
+    - Fix some corner cases for HEVC when OMX state is changed from
+      Executing to Idle in the middle of the stream
+    - Revert OMX IL to deal with JIRA 145.
+
+
+
+==================================================
+ Date: 2016-07-11
+ Contents of Relg2main10_5_2_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  List of changes compared to previous release
+  ------------------------------------------------
+    Software update.
+    - Support entry point for HEVC.
+    - Fix HEVC deadlock issue when OMX state is changed
+      from Executing to Idle in the middle of the stream.
+
+==================================================
+ Date: 2016-02-26
+ Contents of Relg2main10_5_1_Verisilicon-Socionext-G2V3-SOC-B
+==================================================
+  1. List of changes compared to previous release 
+  ------------------------------------------------
+    Decoder software update
+
+  2. Tags
+  ------------------------------------------------
+    SW tag : swg2_3_1_omx_5r
+
+  3. Hierarchy              
+  ------------------------------------------------
+      g2
+      `-- software
+          |-- common
+          |-- linux
+          |   |-- dwl
+          |   |-- ldriver
+          |   |-- memalloc
+          |   |   `-- gpl
+          |   `-- pcidriver
+          |-- source
+          |   |-- common
+          |   |-- config
+          |   |-- hevc
+          |   |-- inc
+          |   `-- vp9
+          `-- test
+              |-- common
+              |   `-- swhw
+              |-- hevc
+              |-- scripts
+              |   `-- swhw
+              |       `-- legacy
+              `-- vp9
+      
+      22 directories
+
+  ------------------------------------------------
+  4. Known Limitations                            
+  ------------------------------------------------
+  - None                                          
+
+  5. Contact Information:                         
+  ------------------------------------------------
+  hantro_support@verisilicon.com                  
+  https://jira.verisilicon.fi:8080/secure/Dashboard.jspa
+  ------------------------------------------------

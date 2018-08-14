@@ -1,0 +1,665 @@
+   omxil_dec_2_0_23
+
+Common changes:
+
+Decoder changes:
+-Clear dynamic parameters in "transition_to_idle_from_executing" and
+"port_flush (flush ALL)" sequence.
+-If output buffer gotten from LLAPI is send to the clientApp without
+proper timestamp and mark_data, set "nFillLen = 0" for this buffer to
+mark this buffer as an empty buffer.
+-Fix the first frame discard issue in VC1 simple/main profile.
+-Add a new flag "singleField" in OMX private output area to indicate
+the single field picture(h264/mpeg2).
+-Use "DBGT_PDEBUG" to replace "DBGT_CRITICAL" to suppress the warning message
+in decoder_pictureconsumed_xxx().
+-Add the handle of return value "XXXDEC_ABORTED" in function decoder_endofstream_xxx().
+-Fix the undetermind value of "dec->oldestPicIdInBuf" in the first output buffer.
+-Remove the useless while-loop in decoder_deinit().
+-Change the name of API from waitafter() to abortafter().
+-Use "outputOtherField" to replace "firstField" to support mpeg2 single field output.
+
+Encoder changes:
+
+---------------------------------------------------------
+
+
+   omxil_dec_2_0_22
+
+Common changes:
+
+Decoder changes:
+-Add escape path in timestamp/markbuffer pop loop in async_dispatch_frame_buffer().
+-Change default error handling method to DEC_EC_FAST_FREEZE.
+-Call pictureconsumed() in decoder_fill_this_buffer() all the time to fix the
+deadlock occured in VP9 port reconfig.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_21
+
+Common changes:
+
+Decoder changes:
+-Fix bufferlist overwritten issue when outport buffer is returned out-of-order.
+-Clear buffer header parameters when output buffer returned in CommandFlush/StateChange sequence.
+-Fix corner cases in VP9 dynamic port reconfig.(the address of freed buffer and realloced buffer is the same)
+-Define macro SKIP_NOT_SUPPORTED_STREAM to continue decoding rather than going to INVALID state.
+-Fix the potential deadlock occured in pop_propagate_data.
+
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_20
+
+Common changes:
+
+Decoder changes:
+-Update OMX IL to support return value xxxDEC_FORMAT_NOT_SUPPORTED.
+-Update OMX IL to continue decoding rather than going into INVALID state
+if decoder return xxxDEC_STREAM_NOT_SUPPORTED.
+
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_19
+
+Common changes:
+
+Decoder changes:
+-Update OMX IL to support adaptive streams for VP9.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_18
+
+Common changes:
+
+Decoder changes:
+-Update OMX IL to reorder nTimeStamp and MarkBuffer for RV/VC1/VP8/VP6/AVS/MPEG4.
+-Fix compiling error on Android platform(Issues may be still existed because of lack of env).
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_17
+
+Common changes:
+
+Decoder changes:
+-Update OMX IL to reorder nTimeStamp and MarkBuffer for H264/MPEG2/HEVC/VP9.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_16
+
+Common changes:
+
+Decoder changes:
+-Update OMX IL to support adaptive streams for RV/VP8/VP6/VC1/AVS/MPEG4.
+-Clear Signal[1]/Signal[2] after CommandFlush.
+-Reset dynamic parameters in structure OMX_DECODER in OMX_Loaded state.
+-Wait OMX output thread aborted after abort() called in OMX_Invalid state.
+-Use nFlags of last output buffer as a parameter of outport buffer Event callback.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_15
+
+Common changes:
+
+Decoder changes:
+-Add support for new AVS/RV/VC1/MPEG4/VP8/VP6 API xxxDecAbort/xxxDecWaitAfter.
+-Fix the timing hole in fill_this_buffer, pictureconsumed() should be called
+after decoder_push_buffer() is called.
+-Fix the VC1 deadlock issue if the decoder instance was not built all the time.
+-Fix the SEGV issues when decoding VC1 interlace streams.
+-Return CODEC_ABORTED rather than CODEC_OK if abort status is detected.
+-Make sure OMX output thread is blocked or killed before return ALL buffers to client.
+-Update omx IL to support status DEC_FLUSHED returned by getframe.
+-Fix some potential timing hole/deadlock loop in OMX IL.
+-Call abort and waitafter if OMX state is changed from Executing to Invalid.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_14
+
+Common changes:
+
+Decoder changes:
+-Add support for command OMX_CommandFlush in OMX IL.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_13
+
+Common changes:
+
+Decoder changes:
+-Add support for new VP9 API Vp9DecAbort/Vp9DecWaitAfter
+-Revert decoder.c to set the EOS flag for last output buffer.
+-Fix the deadlock risk at a normal EOS in omx output thread.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_12
+
+Common changes:
+
+Decoder changes:
+-Add support for new HEVC API HevcDecAbort/HevcDecWaitAfter
+-Add support for new H264 API H264DecAbort/H264DecWaitAfter
+-Add support for new Mpeg2 API Mpeg2DecAbort/Mpeg2DecWaitAfter
+-Update OMX IL logic to support ChangeChannel/SEEK operations.
+-Return the last input buffers in state change mode.
+-Fix one more output buffer required issues when a normal EOS detected in OMX IL.
+-Destory omx output thread if idle state is detected.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_11
+
+Common changes:
+
+Decoder changes:
+-Update OMX IL output port parameters for adaptive streams
+-Fix minor coding style issues.
+
+Encoder changes:
+
+---------------------------------------------------------
+   omxil_dec_2_0_10
+
+Common changes:
+
+Decoder changes:
+-Update build script
+-Check that input buffer header exists before access
+-Update OMX IL output port parameters for adaptive streams
+-Fix deadlock issue when OMX state is changed from Executing to Idle
+
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_9
+	
+Common changes:
+
+Decoder changes:
+-Add support for new VP8 API
+-Add support for new VP6 API
+-Add support for new AVS API
+-Add support for new RV API
+-Update MJPEG support
+-Fix bug when setting output port color format
+-Fixes to the test application
+-Return error if video resolution is too small
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_8
+	
+Common changes:
+
+Decoder changes:
+-Add support for new VC1 API
+-Add support for new Mpeg4 API
+-G1 decoder is now configured using OMX_VIDEO_PARAM_G1CONFIGTYPE
+-Minor fixes
+
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_7
+	
+Common changes:
+
+Decoder changes:
+-Fix timing issue with G2 dynamic port reconfig
+-Add support for new H264 API
+-Add support for new Mpeg2 API
+-Minor fixes
+
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_6
+	
+Common changes:
+
+Decoder changes:
+-Fix issues with USE_EXTERNAL_BUFFER disabled
+-Fix bug in output buffer size calculation
+-Fix possible crash when component is deinitialized
+-G2 decoder is now configured using OMX_VIDEO_PARAM_G2CONFIGTYPE
+-Add support for G2 decoder's RFC (reference frame compression)
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_5
+	
+Common changes:
+
+Decoder changes:
+-Remove deprecated compiler flag HANTRO_TESTBENCH
+-Add VP9 profile 2 support
+-Fix EOS (end of stream) handling for G2
+-Remove nonstandard coding type OMX_VIDEO_CodingVPX
+-Add structures ALLOC_PRIVATE and OUTPUT_BUFFER_PRIVATE for
+accessing HW physical addresses
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_4
+	
+Common changes:
+
+Decoder changes:
+-Add struct VP9DEC_BUFFER_PRIVATE for accessing VP9 chroma output buffer
+-Fix issues when G2 tiled output format is enabled
+-Fix issues on HEVC dynamic resolution streams
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_enc_2_0_2
+	
+Common changes:
+
+Decoder changes:
+
+Encoder changes:
+-Initialize CIR counter (H264 & VP8)
+-Add mutex to protect OMX component state check
+-Fix bug when copying data from VP8 output partitions to output buffer
+
+-----------------------------------------------------------
+    omxil_enc_2_0_1
+	
+Common changes:
+
+Decoder changes:
+
+Encoder changes:
+-Fix build issue on recent GCC compilers
+-Add support for 64-bit platforms
+-Fix compiler warnings
+-It is now possible to disable/enable Jpeg encoder when building image encoder
+-Add Roi2 area support to testclient
+
+-----------------------------------------------------------
+    omxil_dec_2_0_3
+	
+Common changes:
+
+Decoder changes:
+-Add definition for G2 output pixel format
+-Add definition for G2 output picture format
+-Minimum output buffer count for VP9 changed back to 6 (requires the latest G2 SW)
+-Add support for 64-bit platforms
+-Minor fixes
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_2
+	
+Common changes:
+
+Decoder changes:
+-Add support for the latest G2 API
+-Start decoding when nBufferCountMin output buffers are available for G2 decoder
+-Allow SetParameter call when component is in Executing state
+-Minimum output buffer count for VP9 is now 10 (limitation of G2 SW)
+-Test application improvements
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_1
+	
+Common changes:
+
+Decoder changes:
+-Fix timestamp flush when G2 decoder is used
+-Fix deadlock on dynamic port reconfig when G2 decoder is used
+-Fix compiler warnings
+-Add compiler flags for temporary input/output buffer usage
+-Fix dynamic port reconfig issue when G1 Jpeg decoder is used
+-Fix bug: Last frame was missing on certain Mpeg2 streams
+-Test application improvements
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_dec_2_0_0
+	
+Common changes:
+-VP9 levels removed from VSI extension
+
+Decoder changes:
+-Fix timestamp issue when decoder skips non-reference frames
+-Support the latest G2v1 SW (swg2_1_7)
+
+Encoder changes:
+
+-----------------------------------------------------------
+    omxil_enc_2_0_0
+	
+Common changes:
+
+
+Decoder changes:
+
+
+Encoder changes:
+-Initial support for H2 HEVC
+-Fix bug when configuring deblock parameter
+
+-----------------------------------------------------------
+    omxil_2_0_0
+	
+Common changes:
+
+Decoder changes:
+-Initial support for G2 HEVC and VP9
+
+Encoder changes:
+	
+-----------------------------------------------------------
+    omxil_1_7_5r
+
+Common changes:
+
+Decoder changes:
+-Decrease RETRY_INTERVAL from 50 to 5
+
+Encoder changes:
+-Fixed bugs
+    * Remove support for packed 24-bit RGB color formats
+    * Do not send port settings changed event when configuring bitrate or frame rate between frames.
+-Add support for cyclic intra refresh
+-Add support for Android's prependSPSPPSToIDRFrames extension  (Requires H1v6 SW build 1.47 or newer)
+
+-----------------------------------------------------------
+    omxil_1_7_4r
+
+Common changes:
+-Change macro's name: CHECK_STATE_LOADED -> CHECK_STATE_NOT_LOADED
+-Check that component is in proper state when OMX_SetParameter is called
+-Remove state restrictions when OMX_SetConfig is called
+-Add API version and HW build to debug prints
+
+Decoder changes:
+-Fixed bugs
+    * Don't buffer zero timestamp if buffer is empty and EOS
+    * Don't buffer timestamp if buffer contains codec configuration data
+    * VP8DEC_STRM_PROCESSED return value not handled
+    * Calculation of PP input buffer size
+    * PP BGRA8888 color format issue
+    * Color format issue with WebP and image domain
+    * VC1 output picture issue when PP is not enabled and the input stream is interlaced
+    * Force input crop width and height to be a multiple of 8
+-Add compile flag DISABLE_OUTPUT_SCALING
+    * Automatic output scaling can be disabled when PP is enabled
+-Send OMX_EventPortSettingsChanged message when output crop rect is set
+-Add support for reconfiguration of PP rotation while decoder is running
+-Send extra decoder output buffer with EOS flag and nFilledLen = 0 to meet Stagefright end of stream requirement
+-Postpone decoding until output port reconfig is ready
+-Add support for new color formats YUV411, YUV440 and YUV444
+-Add mutex to protect time stamp buffer
+-Scanframe function is now enabled in compile time using flag -DUSE_SCANFRAME
+
+Encoder changes:
+-Fix bug in VP8 OMX encoder
+    * DCT partitions and error resilient mode were not set correctly
+-Add support for 8290/H1 encoder intra area parameter
+-Add support for 8290/H1 encoder ROI parameter
+-Add support for H1 encoder adaptive ROI parameters
+-Add support for VP8 encoder temporal layers
+
+-----------------------------------------------------------
+    omxil_1_7_3r
+
+Common changes:
+-Fix possible data races reported by Helgrind tool
+-Fix bug in OMX Core free handle
+-Input and output port buffer sizes are now set by component and are read only
+    * Component can use default sizes defined in codec.h or calculate the sizes dynamically
+-Do not accept OMX_SetParameter calls in IDLE state
+-Add/modify/remove debug prints
+-Add default input and output buffer sizes to codec.h
+-Add Hantro OMX IL core plugin example code
+-Remove unneeded memset from OSAL
+-Code cleanup and coding style fixes
+-Minor fixes
+
+Decoder changes:
+-New OMX IL extension header and buffer flag for H264 MVC streams
+    * Compile flag MVC_SUPPORT is not needed any more
+-Rename coding types not supported by OMX IL specification moved to OMX IL extension header
+-Fix build errors when post processor source codes are not available
+-Fix bug in Android thumbnail creation
+-Fix possible memory leak in Android environment: Typo in compiler directive
+-Fix bug in timestamp handling: Location of receive timestamp was changed
+-Fix bug in setting output crop info: Parameters were not update correctly when decoding SVC stream
+-Add OMX role for post processor
+-Add error handling
+-Rename USE_OUTPUT_CROP compile flag to SET_OUTPUT_CROP_RECT
+
+Encoder changes:
+-Fix bug in encoder: Internal input buffer was always used -> big performance improvement
+-Fix bug in encoder profile and level support: Wrong profiles/levels for 7280 encoder
+-Internal buffer usage is now controlled by compile flags
+-Add compile flag USE_TEMP_OUTPUTBUFFER: Enable internal output buffer usage
+-Add compile flag USE_STAB_TEMP_INPUTBUFFER: Enable internal input buffer for video stabilization 
+-Add code for performance measurements
+-Remove deprecated asserts from encoder
+-Fix deadlock in encoder testclient
+
+-----------------------------------------------------------
+    omxil_1_7_2r
+
+Common changes:
+-Add missing color format to HantroOmx_str_omx_color()
+
+Decoder changes:
+-Add some error return values
+
+Encoder changes:
+-Fix bug in encoder component port definition: Input buffer size was not set properly
+-Add sync frame flag also into stabilized encoding mode
+-Add output buffer wait also into stabilized encoding mode
+-Add some more debug prints
+-Code cleanup
+
+-----------------------------------------------------------
+    omxil_1_7_1r
+
+Common changes:
+-Fix compiler warnings
+-Remove redundant assert
+-Add missing switch case breaks before OMX_IndexParamPriorityMgmt
+-Add media_codecs.xml file for Android Jelly Bean
+-Code cleanup
+
+Decoder changes:
+-Fix bugs in input/output color formats: OMX_COLOR_FormatYUV420Planar is now used only for PP input format
+-Fix bug in H264 display smoothing: Output buffers were not flushed if EOS
+-Fix bug when leaving playback from pause or executing state: Null output buffer was sent to PP
+-Fix bug in H264 display smoothing: H264DecNextPicture was called more than once
+-Fix some return values in decoder test bench
+-Fix bugs in decoder test bench
+-Flush decoder output when returning buffers
+-Add non-standard VP8 coding type for Android
+-Add some debug prints
+
+Encoder changes:
+-Major rework of decoder debug trace mechanism (*)
+-Preliminary fix to issue where encoder output buffer is not immediately available
+-Fix encoder roles and names
+-Fix bug in compiler directives
+-Disable one dynamic port change if the encoder is used in Android
+-Improve error handling
+-Enable or disable Mpeg4 encoder VBV model based on CBR or VBR
+-Add support for OMX_BUFFERFLAG_CODECCONFIG and OMX_BUFFERFLAG_SYNCFRAME
+-Add RGB888 support for 8290 encoder
+-Add support for H1v5 and H1v6 encoder APIs
+
+
+(*) Debug traces and levels can now be set dynamically
+ Use CFLAGS += -DENABLE_DBGT_TRACE
+     CFLAGS += -DDBGT_CONFIG_AUTOVAR
+
+ Activate all traces
+ -Android:
+    adb shell setprop debug.h1enc.trace 0xffff
+    adb shell setprop debug.8290enc.trace 0xffff
+    adb shell setprop debug.7280enc.trace 0xffff
+ -Bash:
+    export debug_h1enc_trace=0xffff
+    export debug_8290enc_trace=0xffff
+    export debug_7280enc_trace=0xffff
+
+ Activate light traces and prolog/epilog
+ -Android:
+    adb shell setprop debug.h1enc.trace 0x33
+    adb shell setprop debug.8290enc.trace 0x33
+    adb shell setprop debug.7280enc.trace 0x33
+ -Bash:
+    export debug_h1enc_trace=0x33
+    export debug_8290enc_trace=0x33
+    export debug_7280enc_trace=0x33
+
+ See dbgtrace.h for more information
+
+-----------------------------------------------------------
+    omxil_1_7r
+
+Common changes:
+
+Decoder changes:
+-Major rework of decoder debug trace mechanism (*)
+-Fix deadlocks on port enable/disable/flush with Android Stagefright
+-Fix bug in Jpeg stream error handling: Possibility to end up in an infinite loop
+-Fix incorrect stride size
+-Fix bug in PP combined mode disable: Wait for PP if PP is busy
+-Other minor fixes
+-Add feature where OMX IL component sets output port buffer size
+    - Use CFLAGS += -DCOMPONENT_SETS_OUTPUT_PORT_BUFFER_SIZE
+-Add support for OMX_IndexConfigCommonOutputCrop
+    - Use CFLAGS += -DUSE_OUTPUT_CROP
+-Add support for Android ICS native buffers
+    - Use CFLAGS += -DUSE_ANDROID_NATIVE_BUFFER
+-Add checks for maximum supported input resolution
+
+Encoder changes:
+-None
+
+(*) Debug traces and levels can now be set dynamically
+ Use CFLAGS += -DENABLE_DBGT_TRACE
+     CFLAGS += -DDBGT_CONFIG_AUTOVAR
+
+ Activate all traces
+ -Android:
+    adb shell setprop debug.g1dec.trace 0xffff
+ -Bash:
+    export debug_g1dec_trace=0xffff
+
+ Activate light traces and prolog/epilog
+ -Android:
+    adb shell setprop debug.g1dec.trace 0x33
+ -Bash:
+    export debug_g1dec_trace=0x33
+
+ For OMX decoder test bench use property
+ debug.video_decoder.trace or debug_video_decoder_trace
+
+ See dbgtrace.h for more information
+
+-----------------------------------------------------------
+    omxil_1_6r
+
+Common changes:
+-Fix compiler warnings
+-Fix memory leak
+
+Decoder changes:
+-Fix memory leak
+-Fix bug in DWL memory allocation
+-Fix bug in timestamp buffering
+-Fix bug in dynamic reconfig
+-Fix bugs in decoder test bench
+-Fix bug in decoder component initialization
+-Fix bug in decoder + PP combined mode: In some cases output buffer address was not updated correctly
+-Fix bug in AVS, Mpeg2, Mpeg4 and VC1 decoders without PP: Interlaced frames were not handled correctly
+-Fix bug in Jpeg decoder: One ENABLE_PP compiler directive was missing
+-Add missing role for RV decoder
+-Add handling for NONREF_PIC_SKIPPED return value
+-Add SW workaround for VP8 decoder HW timeout bug
+-Add support for VC1 multi-resolution streams
+
+Encoder changes:
+-Update testclient and test scripts to support the latest H1 encoder
+
+-----------------------------------------------------------
+    omxil_1_5r_2
+
+Common changes:
+-Fix bug which could cause crash in some conditions
+
+Decoder changes:
+-Fix bug where last decoded frames were not outputted at the end of the stream
+-Fix bug in VP8 + PP mode. PP was configured before VP8 headers were decoded
+-Fix bug in VP8 + PP mode when video frame dimensions are not multiple of 16
+-Fix bug in WebP + PP mode. PP was configured before WebP headers were decoded
+-Fix bug in WebP + PP mode when video frame dimensions are not multiple of 16
+-Fix bug in VP6 + PP mode when video frame dimensions are not multiple of 16
+-Fix bug in VC1 + PP mode. Wrong alignment in video frame dimensions
+-Fix bugs in decoder test bench and made some improvements
+-Fix compiler warnings
+-Add support for YUV411C and YUV444C JPEG input streams in PP combined mode
+-Code cleanup
+-Add initial Motion JPEG support (requires decoder SW upgrade)
+-Remove separate VP6 model
+
+Encoder changes:
+-None
+
+-----------------------------------------------------------
+    omxil_1_4r
+Decoder changes:
+-Add H264 decoder MVC support
+-Fix bug in time stamp handling
+-Update customer test file list
+
+Encoder changes:
+-Add RGB888 support
+-Add support for bitrate change while encoding
+-Add support for AVC intra period
+-Add support for frame rate change while encoding
+-Add support for h263, AVC and mpeg4 intra frame refresh
+-testclient supports now VP8 & WebP
+
+-----------------------------------------------------------
+    omxil_1_3r
+-Add Google VP8 extension headers & structures
+-Fix profiles & levels
+-Fix bug in decoder test benches
+-Add missing ENABLE_PP flags

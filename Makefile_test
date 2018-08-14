@@ -1,0 +1,140 @@
+CC = $(CROSS_COMPILE)gcc --sysroot=$(SDKTARGETSYSROOT)
+AR = $(CROSS_COMPILE)ar
+CFLAGS ?= -O2
+
+SOURCE_ROOT = decoder_sw/software
+RELEASE_DIR = bin
+
+LIBS = -L./ -lhantro -lpthread
+LIBSG1 = -L../../../../ -lg1 -lcommon_g1 -lpthread
+#LIBSG1RV = -L../../../../ -lg1 -lcommon_g1 -L./rm_parser -lrvparser -lpthread
+
+INCLUDE_HEADERS = -I./decoder_sw -I$(SOURCE_ROOT) -I$(SOURCE_ROOT)/source/inc -I$(SOURCE_ROOT)/source/common -I$(SOURCE_ROOT)/source/hevc \
+           -I$(SOURCE_ROOT)/source/config -I$(SOURCE_ROOT)/test/common -I$(SOURCE_ROOT)/test/common/swhw -I$(SOURCE_ROOT)/test/vp9
+
+CFLAGS += -DTB_PP -DUSE_FAKE_RFC_TABLE -DFIFO_DATATYPE=void* -DNDEBUG -DDOWN_SCALER \
+           -DCLEAR_HDRINFO_IN_SEEK -DUSE_EXTERNAL_BUFFER -DUSE_FAST_EC -DUSE_VP9_EC -DGET_FREE_BUFFER_NON_BLOCK \
+           -DDEC_X170_OUTPUT_FORMAT=0  -DDEC_X170_TIMEOUT_LENGTH=-1 -DDWL_DISABLE_REG_PRINTS -DENABLE_HEVC_SUPPORT \
+           -DENABLE_VP9_SUPPORT
+
+#CFLAGS += -DWEBM_ENABLED
+#CFLAGS += -D_SW_DEBUG_PRINT -D_DWL_DEBUG
+CFLAGS += -DUSE_64BIT_ENV
+CFLAGS += $(INCLUDE_HEADERS)
+#CFLAGS += -fno-common
+#CFLAGS += -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing
+CFLAGS += -fPIC
+CFLAGS += -DUSE_OUTPUT_RELEASE
+CFLAGS += -DGET_OUTPUT_BUFFER_NON_BLOCK
+#CFLAGS+= -DSW_PERFORMANCE
+
+TB_COMMON_OBJS += $(SOURCE_ROOT)/source/common/decapi.o  \
+           $(SOURCE_ROOT)/test/common/dectestbench.o \
+           $(SOURCE_ROOT)/test/common/bytestream_parser.o \
+           $(SOURCE_ROOT)/test/common/command_line_parser.o \
+           $(SOURCE_ROOT)/test/common/error_simulator.o \
+           $(SOURCE_ROOT)/test/common/file_sink.o \
+           $(SOURCE_ROOT)/test/common/md5_sink.o \
+           $(SOURCE_ROOT)/test/common/null_sink.o \
+           $(SOURCE_ROOT)/test/common/vpxfilereader.o \
+           $(SOURCE_ROOT)/test/common/yuvfilters.o \
+           $(SOURCE_ROOT)/test/common/null_trace.o
+
+
+SWHW_OBJS =  $(SOURCE_ROOT)/test/common/swhw/tb_stream_corrupt.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_params.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_cfg.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_md5.o \
+           $(SOURCE_ROOT)/test/common/swhw/md5.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_tiled.o
+
+SWHW_OBJS_G1 = $(SOURCE_ROOT)/test/common/swhw/tb_stream_corrupt.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_params_g1.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_cfg.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_md5.o \
+           $(SOURCE_ROOT)/test/common/swhw/md5.o \
+           $(SOURCE_ROOT)/test/common/swhw/tb_tiled.o
+
+LIBCOMMONG1=libcommon_g1
+SONAMEVERSION = 1
+
+OBJ = $(TB_COMMON_OBJS) $(SWHW_OBJS)
+
+
+TARGET = g2dec
+TARGET_G1 = hx170dec mx170dec m2x170dec vx170dec vp6dec vp8x170dec ax170dec jx170dec 
+#TARGET_G1 += rvx170dec
+
+all: $(TARGET) $(TARGET_G1)
+
+install:
+	@mkdir -p $(DEST_DIR)/
+	cp $(LIBCOMMONG1).so $(DEST_DIR)/usr/lib
+	cp $(RELEASE_DIR)/* $(DEST_DIR)/usr/bin
+
+$(TARGET): $(OBJ)
+	mkdir -p $(RELEASE_DIR)
+	$(CC) $(LDFLAGS) -o $(RELEASE_DIR)/$(TARGET) $(OBJ) $(LIBS)
+
+$(LIBCOMMONG1).so.$(SONAMEVERSION): $(SWHW_OBJS_G1)
+	$(CC) $(LDFLAGS) -o $@ -shared -nostartfiles -Wl,-soname,$@ $^
+
+$(LIBCOMMONG1).so: $(LIBCOMMONG1).so.$(SONAMEVERSION)
+	ln -s $< $@
+
+hx170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/h264high versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/h264high/hx170dec-arm $(RELEASE_DIR)/$@
+
+mx170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/mpeg4 versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/mpeg4/mx170dec_versatile $(RELEASE_DIR)/$@
+
+m2x170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/mpeg2 versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/mpeg2/m2x170dec_versatile $(RELEASE_DIR)/$@
+
+vx170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/vc1 versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/vc1/vx170dec_versatile $(RELEASE_DIR)/$@
+
+vp6dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/vp6 versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/vp6/vp6dec_versatile $(RELEASE_DIR)/$@
+
+vp8x170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/vp8 versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/vp8/vp8x170dec_versatile $(RELEASE_DIR)/$@
+
+ax170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/avs versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/avs/ax170dec_versatile $(RELEASE_DIR)/$@
+
+jx170dec: $(LIBCOMMONG1).so
+	make -C $(SOURCE_ROOT)/test/jpeg versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" LIBS="$(LIBSG1)"
+	cp $(SOURCE_ROOT)/test/jpeg/jx170dec_versatile $(RELEASE_DIR)/$@
+
+#rvx170dec: $(LIBCOMMONG1).so
+#	make -C $(SOURCE_ROOT)/test/rv versatile USE_64BIT_ENV=y USE_EXTERNAL_BUFFER=y USE_OUTPUT_RELEASE=y USE_DEC_IRQ=y CC="$(CC)" AR="$(AR) -rc" LIBS="$(LIBSG1RV)"
+#	cp $(SOURCE_ROOT)/test/rv/rvx170dec_versatile $(RELEASE_DIR)/$@
+
+
+%.o: %.c
+	$(CC) $(INC) -Wall -O2 $(CFLAGS) -c $^ -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(RELEASE_DIR)/*
+	rm -f $(OBJ)
+	rm -f $(SWHW_OBJS_G1) $(LIBCOMMONG1).*
+	make -C $(SOURCE_ROOT)/test/h264high clean
+	make -C $(SOURCE_ROOT)/test/mpeg4 clean
+	make -C $(SOURCE_ROOT)/test/mpeg2 clean
+	make -C $(SOURCE_ROOT)/test/vc1 clean	
+	make -C $(SOURCE_ROOT)/test/vp6 clean
+	make -C $(SOURCE_ROOT)/test/vp8 clean
+	make -C $(SOURCE_ROOT)/test/avs clean
+	make -C $(SOURCE_ROOT)/test/jpeg clean
+	#make -C $(SOURCE_ROOT)/test/rv clean
+	#make -C $(SOURCE_ROOT)/test/rv/rm_parser clean
+
